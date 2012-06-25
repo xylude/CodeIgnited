@@ -17,30 +17,8 @@ class c2dm {
      * @param type $source
      * @return array|boolean
      */
-    function c2dm_register($email, $password, $source = false) {
+    function c2dm_register($email, $password, $source) {
 	$curl = curl_init();
-
-	if (is_array($source)) {
-	    $sourceArr = $source;
-	    $source = '';
-	    if (isset($sourceArr['company'])) {
-		$source = "{$sourceArr['company']}-";
-	    } else {
-		$source = 'eProximiti-';
-	    }
-
-	    if (isset($sourceArr['app'])) {
-		$source += "{$sourceArr['app']}-";
-	    } else {
-		$source += "{$this->ci->site->short_name}-";
-	    }
-
-	    if (isset($sourceArr['version'])) {
-		$source += $sourceArr['version'];
-	    } else {
-		$source += '1.0';
-	    }
-	}
 
 	$data = array(
 	    'Email' => $email,
@@ -67,9 +45,7 @@ class c2dm {
 	    // Get the auth string
 	    $matches = array();
 	    preg_match("/Auth=([a-z0-9_\-]+)/i", $response, $matches);
-            $a = new Appattr();
-            $a->setAttr('c2dm_token',(string)$matches[1]);
-	    return true;
+	    return (string)$matches[1];
 	}
 
 	return $errors[1];
