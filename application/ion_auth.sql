@@ -56,7 +56,7 @@ CREATE TABLE `users` (
   `group_id` mediumint(8) unsigned NOT NULL,
   `ip_address` char(16) NOT NULL,
   `username` varchar(15) NOT NULL,
-  `password` varchar(40) NOT NULL,
+  `password` varchar(80) NOT NULL,
   `salt` varchar(40) DEFAULT NULL,
   `email` varchar(254) NOT NULL,
   `activation_code` varchar(40) DEFAULT NULL,
@@ -74,4 +74,4 @@ CREATE TABLE `users` (
 #
 
 INSERT INTO `users` (`id`, `group_id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `created_on`, `last_login`, `active`) VALUES
-	('1','1','127.0.0.1','administrator','59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4','9462e8eee0','admin@admin.com','',NULL,'1268889823','1268889823','1');
+	('1','1','127.0.0.1','administrator','$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36','9462e8eee0','admin@admin.com','',NULL,'1268889823','1268889823','1');
