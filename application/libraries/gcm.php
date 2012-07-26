@@ -9,10 +9,11 @@
  */
 
 class Gcm {
+
     public function send($token, $srvtoken, $message) {
-        $headers = array("Content-Type" => "application/json", "Authorization" => "key=" . $srvtoken);
+        $headers = array("Content-Type: application/json", "Authorization: key=" . $srvtoken);
         $data = array(
-            'data' => $message,
+            'data' => array("message" => $message),
             'registration_ids' => array($token)
         );
 
@@ -27,7 +28,12 @@ class Gcm {
         error_log(json_encode($data));
         $response = curl_exec($ch);
         curl_close($ch);
-        
+
         //still need to add response handling
+        $res = json_decode($response);
+        if (isset($res->successs) > 0) {
+            return true;
+        }
+        return false;
     }
 }
