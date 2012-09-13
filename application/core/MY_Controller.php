@@ -57,6 +57,27 @@ class MY_Controller extends CI_Controller {
         header('Content-type: application/json');
         echo json_encode($this->out);
     }
+    
+    private function output_xml() {
+        $outstr = '<?xml version="1.0" encoding="ISO-8859-1"?><response>';
+        header('Access-Control-Allow-Origin: *');
+        header('Content-type: application/xml');
+        $outstr.= $this->xmlencode($this->out);
+        echo $outstr . '</response>';
+    }
+
+    private function xmlencode($arr) {
+        $outstr = '';
+        foreach ($arr as $k => $v) {
+            $k=(is_int($k))?'item':$k;
+            if (is_array($v)) {
+                $outstr.='<'.$k.'>'.$this->xmlencode($v).'</'.$k.'>';
+            } else {
+                $outstr.='<' . $k . '>' . str_replace(array("&", "<", ">", "\"", "'"), array("&amp;", "&lt;", "&gt;", "&quot;", "&apos;"), $v) . '</' . $k . '>';
+            }
+        }
+        return $outstr;
+    }
 }
 
 ?>
