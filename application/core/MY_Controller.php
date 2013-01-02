@@ -7,6 +7,7 @@ class MY_Controller extends CI_Controller {
     public $isApi = false;
     public $out = array('success' => false);
     public $view = false;
+    public $allowedControllers = array();
 
     public function __construct() {
         parent::__construct();
@@ -15,17 +16,26 @@ class MY_Controller extends CI_Controller {
         if ($this->template == '') {
             $this->template = 'template/default'; //view to load
         }
-        if (substr($_SERVER['SERVER_NAME'], 0, 3) == 'api') {
-            $this->isApi = true;
-            //get and authenticate api key
-            if (isset($_POST['api_auth_key'])) {
-
+        if (!$this->input->is_cli_request()) {
+            if (substr_count($this->uri->segment(1), 'api') > 0) {
+                $this->isApi = true;
+                //get and authenticate api key
+                $this->data = json_decode(file_get_contents('php://input'));
             } else {
-                //header('HTTP/1.1 403 Forbidden');
-                //exit;
+                //not api -- site
+                if (!$this->ion_auth->logged_in()) {
+                    if (!in_array($this->router->class, $this->allowedControllers)) {
+                        redirect('/login');
+                    }
+                } else {
+                    $this->data['user'] = $this->ion_auth->user()->row();
+                    if ($this->ion_auth->is_admin()) {
+                        //$this->template = 'template/admin';
+                    }
+                }
             }
         } else {
-      
+            $this->isCLI = true;
         }
     }
 
@@ -42,10 +52,10 @@ class MY_Controller extends CI_Controller {
             }
         } else {
             //$d['content'] = $o;
-            if(!$this->view) {
-                $d['content'] = $this->load->view($this->router->class.'/'.$this->router->method,$this->data,true);
+            if (!$this->view) {
+                $d['content'] = $this->load->view($this->router->class . '/' . $this->router->method, $this->data, true);
             } else {
-                $d['content'] = $this->load->view($this->view,$this->data,true);
+                $d['content'] = $this->load->view($this->view, $this->data, true);
             }
             $template = $this->load->view($this->template, $d, true);
             echo $template;
@@ -57,7 +67,7 @@ class MY_Controller extends CI_Controller {
         header('Content-type: application/json');
         echo json_encode($this->out);
     }
-    
+
     private function output_xml() {
         $outstr = '<?xml version="1.0" encoding="ISO-8859-1"?><response>';
         header('Access-Control-Allow-Origin: *');
@@ -69,15 +79,16 @@ class MY_Controller extends CI_Controller {
     private function xmlencode($arr) {
         $outstr = '';
         foreach ($arr as $k => $v) {
-            $k=(is_int($k))?'item':$k;
+            $k = (is_int($k)) ? 'item' : $k;
             if (is_array($v)) {
-                $outstr.='<'.$k.'>'.$this->xmlencode($v).'</'.$k.'>';
+                $outstr.='<' . $k . '>' . $this->xmlencode($v) . '</' . $k . '>';
             } else {
                 $outstr.='<' . $k . '>' . str_replace(array("&", "<", ">", "\"", "'"), array("&amp;", "&lt;", "&gt;", "&quot;", "&apos;"), $v) . '</' . $k . '>';
             }
         }
         return $outstr;
     }
+
 }
 
 ?>
