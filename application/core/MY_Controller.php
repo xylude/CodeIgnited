@@ -5,9 +5,9 @@ class MY_Controller extends CI_Controller {
     public $template;
     public $data = array('message' => false);
     public $isApi = false;
-    public $out = array('success' => false);
+    public $out = array('success' => true);
     public $view = false;
-    public $allowedControllers = array();
+    public $allowedControllers = array('auth');
 
     public function __construct() {
         parent::__construct();
@@ -25,6 +25,7 @@ class MY_Controller extends CI_Controller {
                 //not api -- site
                 if (!$this->ion_auth->logged_in()) {
                     if (!in_array($this->router->class, $this->allowedControllers)) {
+                        //comment this out if you don't want authentication at all:
                         redirect('/login');
                     }
                 } else {
