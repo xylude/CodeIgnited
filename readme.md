@@ -48,6 +48,8 @@ I could access the variable '$hello' from my view like so:
 
 	<?= $hello; //echoes 'Hello World' ?>
     
+The $this->data array is also available (except for any keys named 'content') to the parent template.
+    
 ##Built-in API support:
 
 The Codeignited framework has built-in API support and will treat any folder in the controllers folder with the string 'api' in it as an API. For instance if my folder structure was like so:
