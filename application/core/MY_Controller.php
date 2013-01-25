@@ -52,6 +52,9 @@ class MY_Controller extends CI_Controller {
             }
         } else {
             //$d['content'] = $o;
+            foreach($this->data as $k=>$v) {
+                $d[$k]=$v;
+            }
             if (!$this->view) {
                 $d['content'] = $this->load->view($this->router->class . '/' . $this->router->method, $this->data, true);
             } else {
