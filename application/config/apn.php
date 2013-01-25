@@ -15,24 +15,24 @@
 | Full server path to this file is required.
 |
 */
-$config['PermissionFile'] = APPPATH.'config/certs/apns-dev.pem';
-
+$config['PermissionFile'] = APPPATH.'/config/pem/prod.pem';
+$config['PermissionFile_DEV'] = APPPATH.'/config/pem/dev.pem';
 
 /*
 |--------------------------------------------------------------------------
 | APN Private Key's Passphrase
 |--------------------------------------------------------------------------
 */
-$config['PassPhrase'] = '12345';
+$config['PassPhrase'] = '';
 
 /*
 |--------------------------------------------------------------------------
 | APN Services
 |--------------------------------------------------------------------------
 */
-$config['Sandbox'] = true;
+$config['Sandbox'] = false;
 $config['PushGatewaySandbox'] = 'ssl://gateway.sandbox.push.apple.com:2195';
-$config['PushGateway'] = 'ssl://gateway.sandbox.push.apple.com:2195';
+$config['PushGateway'] = 'ssl://gateway.push.apple.com:2195';
 
 $config['FeedbackGatewaySandbox'] = 'ssl://feedback.sandbox.push.apple.com:2196';
 $config['FeedbackGateway'] = 'ssl://feedback.push.apple.com:2196';
