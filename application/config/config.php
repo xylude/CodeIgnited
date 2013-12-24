@@ -14,8 +14,20 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://test.site.com/';
 
+/*
+ * This is a bit specific to my personal development/staging setup. You can alter this
+ * however you want to make it fit in with your development/staging environments.
+ */
+$config['base_url']	= 'https://mysite.com/';
+
+$parts = explode('/',__FILE__);
+
+if (get_cfg_var('custom.devmode')) {
+    $config['base_url'] = 'http://mysite.local';
+} else if ($parts[3]=='dev') {
+    $config['base_url'] = 'https://dev.mysite.com';
+}
 /*
 |--------------------------------------------------------------------------
 | Index File
@@ -265,8 +277,20 @@ $config['sess_time_to_update']	= 300;
 | 'cookie_secure' =  Cookies will only be set if a secure HTTPS connection exists.
 |
 */
-$config['cookie_prefix']	= "";
-$config['cookie_domain']	= "";
+
+$config['cookie_prefix']	= "mysite_";
+$config['cookie_domain']	= 'mysite.com';
+
+$parts = explode('/',__FILE__);
+
+if (get_cfg_var('custom.devmode')) {
+    $config['cookie_prefix']	= "mysitelocal_";
+    $config['cookie_domain'] = 'mysite.local';
+} else if ($parts[3]=='dev') {
+    $config['cookie_prefix']	= "mysitedev_";
+    $config['cookie_domain'] = 'dev.mysite.com';
+}
+
 $config['cookie_path']		= "/";
 $config['cookie_secure']	= FALSE;
 

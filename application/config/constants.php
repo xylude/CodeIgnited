@@ -1,5 +1,8 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+$upload_location = (get_cfg_var('custom.devmode'))?'/path/to/LOCAL/':'/path/to/PROD/';
+$media_url = (get_cfg_var('custom.devmode'))?'http://my.media.url.local':'https://prod.url.com';
+
 /*
 |--------------------------------------------------------------------------
 | File and Directory Modes
@@ -36,6 +39,8 @@ define('FOPEN_READ_WRITE_CREATE',				'a+b');
 define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
+define('UPLOAD_LOCATION',$upload_location);
+define('MEDIA_URL',$media_url);
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
